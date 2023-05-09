@@ -1,5 +1,6 @@
 package bg.softuni.securitydemo.service;
 
+import bg.softuni.securitydemo.model.AppUserDetails;
 import bg.softuni.securitydemo.model.entity.UserEntity;
 import bg.softuni.securitydemo.model.entity.UserRoleEntity;
 import bg.softuni.securitydemo.repository.UserRepository;
@@ -27,11 +28,13 @@ public class ApplicationUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails map(UserEntity userEntity) {
-        return new User(
+        return new AppUserDetails(
                 userEntity.getUsername(),
                 userEntity.getPassword(),
                 extractAuthorities(userEntity)
-        );
+        )
+                .setCountry(userEntity.getCountry())
+                .setFullName(userEntity.getFirstName() + " " + userEntity.getLastName());
     }
 
     private List<GrantedAuthority> extractAuthorities(UserEntity userEntity) {
